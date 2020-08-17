@@ -4,4 +4,4 @@ This repo is now just the sources, supporting scripts and (outdated) documentati
 
 ## Build Instructions
 In order for the targets to build successfully, you must first run 'npm install' in the root directory.
-
+requires cathage, run `cathage update` as well for build dependencies

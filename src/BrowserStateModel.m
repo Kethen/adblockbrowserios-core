@@ -344,7 +344,7 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
             // In any case, delete it completely because it's in undeterminate state.
             [self removeExtensionSupportDataById:extensionId persistData:NO error:&localErr];
             if (localErr) {
-                UIAlertView *alert = [Utils alertViewWithError:localErr
+		                UIAlertView *alert = [Utils alertViewWithError:localErr
                                                          title:@"Removing broken bundle"
                                                       delegate:nil];
                 [alert show];

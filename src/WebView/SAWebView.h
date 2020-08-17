@@ -25,6 +25,7 @@
 #import <UIKit/UIKit.h>
 #import "BridgeEnums.h"
 #import "WebViewFacade.h"
+#import "BackgroundFacade.h"
 @import JavaScriptCore;
 
 /// A reflection of WebKit-private WebFrame, which cannot be used directly

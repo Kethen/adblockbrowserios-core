@@ -77,7 +77,7 @@ final class CacheResolver<KeyType, ValueType>
     func reject(_ resolver: Rejector) {
         let key = resolver.0
         // find, reject, remove
-        if let index = waiters[key]?.index(where: { $0.id == resolver.1 }) {
+        if let index = waiters[key]?.firstIndex(where: { $0.id == resolver.1 }) {
             if let waiter = waiters[key]?[index] {
                 waiters[key]?.remove(at: index)
                 // if it was the last one, remove the key completely

@@ -20,7 +20,6 @@ import Foundation
 private var documentTitleHandle = "DocumentTitleHandle"
 
 extension SAContentWebView {
-
     // MARK: - UIWebView
 
     open override func layoutSubviews() {

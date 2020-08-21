@@ -33,7 +33,7 @@ open class KittLoggingFormatter: NSObject, DDLogFormatter {
             KittLoggingFormatter.stringFromFlag(logMessage.flag),
             dateFormatter.string(from: logMessage.timestamp),
             logMessage.threadID,
-            logMessage.threadName,
+            logMessage.threadName ?? "null thread name",
             logMessage.message])
     }
 

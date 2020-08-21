@@ -19,6 +19,7 @@ import Foundation
 
 // The Value stored in DOMNodesCache
 final class DOMNodeCacheValue: NSObject {
+    
     let nodeName: String
     weak var originFrame: WebKitFrame?
 
@@ -63,6 +64,7 @@ public final class ContentWebView: SAContentWebView {
     // MARK: - UIWebView
 
     public override func loadRequest(_ request: URLRequest) {
+
         var request = request
         request.originalURL = request.url
         super.loadRequest(request)

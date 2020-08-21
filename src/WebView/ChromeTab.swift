@@ -50,12 +50,14 @@ struct ContentWebViewUpdatedProperties: OptionSet {
 
 @objc
 open class ChromeTab: NSObject {
+    public var desktop = false
+    // public var desktopLastState = false
     @objc public let identifier: UInt
     public unowned let window: ChromeWindow
     public let incognito: Bool
     open weak var openerTab: ChromeTab?
     open weak var openerFrame: KittFrame?
-
+    
     @objc dynamic open var URL: NSURL? {
         didSet {
             if let tabData = tabData, URL != oldValue {
@@ -117,18 +119,36 @@ open class ChromeTab: NSObject {
         if let internalWebView = internalWebView {
             return internalWebView
         } else {
+            var userAgent:String
+            if desktop{
+                userAgent = DesktopUserAgent
+            }else{
+                userAgent = MobileUserAgent
+            }
+            // 	print("Setting userAgent to " + userAgent)
+            Settings.changeUserAgent(userAgent)
+            
+            /*
+            var domain = UserDefaults.standard.volatileDomain(forName: UserDefaults.registrationDomain)
+            UserDefaults.standard.removeVolatileDomain(forName: UserDefaults.registrationDomain)
+            domain.updateValue(userAgent, forKey: "UserAgent")
+            UserDefaults.standard.setVolatileDomain(domain, forName: UserDefaults.registrationDomain)
+            while !UserDefaults.standard.synchronize() {}
+            */
+ 
+            // print("spawning webview")
             let webView = ContentWebView(frame: CGRect.zero)
             webView.chromeTab = self
             webView.faviconLoader = window.chrome.createFaviconLoader(webView)
             webView.identifier = identifier
             webView.pendingURL = URL as URL?
-
             if let restorableState = restorableState {
                 let coder = NSKeyedUnarchiver(forReadingWith: restorableState as Data)
                 webView.decodeRestorableState(with: coder)
                 webView.wasRestored = true
             }
-
+            let userAgentNow = (webView.stringByEvaluatingJavaScript(from: "navigator.userAgent") ?? "failed retrival")
+            // print("user agent from new webView instance: " + userAgentNow)
             internalWebView = webView
             hibernated = false
             return webView
@@ -260,7 +280,7 @@ open class ChromeTab: NSObject {
                 window.chrome.removeWebView(forTabId: identifier)
             }
 
-            typealias ContentWebView = SAContentWebView
+            // typealias ContentWebView = SAContentWebView
 
             let keyPath = [
                 #keyPath(ContentWebView.currentFavicon),
@@ -335,7 +355,32 @@ open class ChromeTab: NSObject {
             return
         }
     }
-
+    
+    /*
+    open func reloadWebView() {
+        if let curWebView = internalWebView{
+            if let superView = curWebView.superview{
+                let frame = curWebView.frame
+                let bounds = curWebView.bounds
+                let center = curWebView.center
+                let transform = curWebView.transform
+                internalWebView?.removeFromSuperview()
+                internalWebView = nil
+                superView.addSubview(webView)
+                webView.frame = frame
+                webView.bounds = bounds
+                webView.center = center
+                webView.transform = transform
+            }
+            
+        }
+    }
+    */
+    open func murderWebView() {
+        internalWebView?.removeFromSuperview()
+        internalWebView = nil
+    }
+    
     open func hibernate() {
         saveState()
         internalWebView?.removeFromSuperview()

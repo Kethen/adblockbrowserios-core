@@ -182,10 +182,35 @@ static NSBundle *_kittCoreBundle;
     return [self isDevModeOn] ? [self devServerURLWithResource:ExtensionServerResource_Listing] : _prodServerURL;
 }
 
++ (void)changeUserAgent:(NSString *)userAgent
+{
+    if (!userAgent)
+        return;
+
+    //UIWebView *tempWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    //NSString *secretAgent = [tempWebView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    //secretAgent = [secretAgent stringByAppendingString:uaStr];
+    NSDictionary<NSString *, id> *domain = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+    if (domain) {
+        NSMutableDictionary<NSString *, id> *newDomain = [domain mutableCopy];
+        [newDomain setObject:userAgent forKey:@"UserAgent"];
+        domain = newDomain;
+    } else {
+        domain = [[NSDictionary alloc]
+                  initWithObjectsAndKeys:userAgent, @"UserAgent", nil];
+    }
+
+    [[NSUserDefaults standardUserDefaults] removeVolatileDomainForName:NSRegistrationDomain];
+    [[NSUserDefaults standardUserDefaults] setVolatileDomain:domain forName:NSRegistrationDomain];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 /// must be lazy init.
 /// When it was directly in constructor, it was invoking JS context creation too early
 + (NSString *)defaultWebViewUserAgent
 {
+    return @"Mozilla/5.0 (Android 10; Mobile; rv:68.0) Gecko/68.0 Firefox/79.0";
+    /*
     static NSString *defaultUIWebViewUserAgent;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -220,6 +245,7 @@ static NSBundle *_kittCoreBundle;
         defaultUIWebViewUserAgent = [NSString stringWithFormat:@"%@ Safari/%@", defaultUIWebViewUserAgent, safariVersion];
     });
     return defaultUIWebViewUserAgent;
+     */
 }
 
 + (NSString *)extensionServerScheme

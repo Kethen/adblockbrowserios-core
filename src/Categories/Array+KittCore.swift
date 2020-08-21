@@ -16,7 +16,7 @@
  */
 
 public extension Collection {
-    public func separate(_ isInFirstPart: (Iterator.Element) throws -> Bool) rethrows
+    func separate(_ isInFirstPart: (Iterator.Element) throws -> Bool) rethrows
         -> ([Iterator.Element], [Iterator.Element]) {
             // swiftlint:disable:next syntactic_sugar
             var result = (Array<Iterator.Element>(), Array<Iterator.Element>())
@@ -32,7 +32,7 @@ public extension Collection {
 }
 
 public extension Collection where Indices == CountableRange<Index> {
-    public func element(at index: Index) -> Iterator.Element? {
+    func element(at index: Index) -> Iterator.Element? {
         if indices.contains(index) {
             return self[index]
         } else {

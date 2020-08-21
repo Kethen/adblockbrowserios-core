@@ -67,7 +67,7 @@ extension KittCore {
         } else {
             // Handles special types of schemes like mailto://...
             // Test case: Join button in acceptableads.org
-            UIApplication.shared.openURL(url)
+            UIApplication.shared.open(url)
         }
 
         return nil

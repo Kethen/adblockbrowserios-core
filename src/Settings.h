@@ -45,8 +45,6 @@ typedef enum {
 + (NSURL *)extensionServerURLForExtensionListing;
 /// the default User-Agent string as set by OS
 + (NSString *)defaultWebViewUserAgent;
-/// change global agent in objc
-+ (void)changeUserAgent:(NSString *)userAgent;
 /// the email to which logged application failures should be sent
 + (NSString *)emailAddressForLoggedAppFailures;
 

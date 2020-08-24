@@ -184,13 +184,15 @@ static NSBundle *_kittCoreBundle;
 
 + (NSString *)desktopWebViewUserAgent
 {
-    return @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36";
+    return @"Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0";
 }
 
 /// must be lazy init.
 /// When it was directly in constructor, it was invoking JS context creation too early
 + (NSString *)defaultWebViewUserAgent
 {
+    return @"Mozilla/5.0 (Android 10; Mobile; rv:68.0) Gecko/68.0 Firefox/79.0";
+    /*
     static NSString *defaultUIWebViewUserAgent;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -225,6 +227,7 @@ static NSBundle *_kittCoreBundle;
         defaultUIWebViewUserAgent = [NSString stringWithFormat:@"%@ Safari/%@", defaultUIWebViewUserAgent, safariVersion];
     });
     return defaultUIWebViewUserAgent;
+    */
 }
 
 + (NSString *)extensionServerScheme

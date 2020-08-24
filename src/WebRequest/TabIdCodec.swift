@@ -17,8 +17,6 @@
 
 import Foundation
 
-let DesktopUserAgent = "Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0"
-let MobileUserAgent = "Mozilla/5.0 (Android 10; Mobile; rv:68.0) Gecko/68.0 Firefox/79.0"
 // var firstPrepare = false
 @objc
 open class TabIdCodec: NSObject {
@@ -53,23 +51,8 @@ open class TabIdCodec: NSObject {
 
     @objc
     open class func prepareNextWebViewForTabId(_ tabId: UInt) {
-        /*
-        let userAgent = [Settings.defaultWebViewUserAgent(), String(format: UserAgentEncodingPattern, tabId)]
-            .joined(separator: " ")
-
+        let userAgent = Settings.defaultWebViewUserAgent()
         UserDefaults.standard.register(defaults: ["UserAgent": userAgent])
-        */
-        let userAgent = MobileUserAgent
-        //if firstPrepare{
-            UserDefaults.standard.register(defaults:["UserAgent":userAgent])
-        /*    firstPrepare = false
-        }else{
-            UserDefaults.standard.removeVolatileDomain(forName: UserDefaults.registrationDomain)
-            UserDefaults.standard.setVolatileDomain(["UserAgent" : userAgent], forName: UserDefaults.registrationDomain)
-            while !UserDefaults.standard.synchronize() {}
-        }
-        */
-        
     }
 
     open class func decodeTabIdFromRequest(_ request: URLRequest) -> UInt? {

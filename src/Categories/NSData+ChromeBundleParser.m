@@ -60,6 +60,15 @@ static const unsigned char CRX_MAGIC[HEADER_ALIGNMENT] = { 0x43, 0x72, 0x32, 0x3
 - (BOOL)crxGetZipContent:(NSData *__autoreleasing *)data
                    error:(NSError *__autoreleasing *)error
 {
+    NSRange range = NSMakeRange(0, HEADER_ALIGNMENT);
+    range.length = self.length - range.location;
+    if (range.length == 0) {
+        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_ZIP_ZERO_LENGTH userInfo:nil];
+        return NO;
+    }
+    *data = [self subdataWithRange:range];
+    return YES;
+    /*
     char headerBlock[HEADER_ALIGNMENT];
     NSRange range = NSMakeRange(0, HEADER_ALIGNMENT);
     if (![self checkedGetBytes:&headerBlock rangeMove:&range]) {
@@ -118,6 +127,7 @@ static const unsigned char CRX_MAGIC[HEADER_ALIGNMENT] = { 0x43, 0x72, 0x32, 0x3
     // needing a certificate and/or keychain importing
     // SecKeyRawVerify(>>SecKeyRef key<<, kSecPaddingPKCS1SHA1, [*data bytes], range.length, signature, signLen)
     return YES;
+     */
 }
 
 @end
